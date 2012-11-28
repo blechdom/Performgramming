@@ -1,0 +1,87 @@
+<html>
+<head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script>
+	var socket = io.connect('http://172.20.121.69:8888');
+
+	// on connection to server, ask for user's name with an anonymous callback
+	socket.on('connect', function(){
+		// call the server-side function 'adduser' and send one parameter (value of prompt)
+		socket.emit('adduser', 'tempName');
+		$(function(){
+		// when the client clicks SEND
+		$('#usernameSend').click( function() {
+			var message = $('#usernameInput').val();
+			$('#usernameInput').val('');
+			// tell server to execute 'sendchat' and send along one parameter
+			socket.emit('adduser', message);
+		});
+
+		// when the client hits ENTER on their keyboard
+		$('#usernameInput').keypress(function(e) {
+			if(e.which == 13) {
+				$(this).blur();
+				$('#usernameSend').focus().click();
+			}
+		});
+	});
+	});
+
+	// listener, whenever the server emits 'updatechat', this updates the chat body
+	socket.on('updatechat', function (username, data) {
+		$('#conversation').append('<br><b>'+ username + ':</b> ' + data);
+	});
+
+	// listener, whenever the server emits 'updateusers', this updates the username list
+	socket.on('updateusers', function(data) {
+		$('#users').empty();
+		$.each(data, function(key, value) {
+			$('#users').append('<div>' + key + '</div>');
+		});
+	});
+
+	socket.on('dataReceived', function(data) {
+		$('#conversation').append("<br>" + data);
+	});
+
+	// on load of page
+	$(function(){
+		// when the client clicks SEND
+		$('#datasend').click( function() {
+			var message = $('#data').val();
+			$('#data').val('');
+			// tell server to execute 'sendchat' and send along one parameter
+			socket.emit('sendchat', message);
+		});
+
+		// when the client hits ENTER on their keyboard
+		$('#data').keypress(function(e) {
+			if(e.which == 13) {
+				$(this).blur();
+				$('#datasend').focus().click();
+			}
+		});
+	});
+
+</script>
+<link href='http://fonts.googleapis.com/css?family=Ranchers' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div style="float:left;width:200px;border-right:1px solid purple;height:100%;padding:10px;overflow:scroll-y;">
+	<div style="font-family: 'Ranchers', serif; font-size:46px; color:purple;">M.T.BRAIN</div> <Br>	
+	<b>Set/Change Username:</b><br><br>
+	<input id="usernameInput" style="width:125px;" />
+	<input type="button" id="usernameSend" value="send" />
+	<br><br>
+	<b>USERS:</b><br><Br>
+	<div id="users"></div>
+</div>
+<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
+	<input id="data" style="width:200px;" />
+	<input type="button" id="datasend" value="send" />
+	<br><Br><b>Listen for OSC on Port 7777.</b><br><br>
+	<div id="conversation"></div>
+</div>
+</body>
+</html>
