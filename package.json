@@ -8,7 +8,10 @@
     "http": "*",
     "omgosc": "0.1.1",
     "say": "0.5.0",
-    "play": "*"
+    "play": "*",
+    "coffee-script": "*",
+    "node-speak": "*",
+    "node-tts-api": "*"
   },
 
   "engines": {

@@ -11,7 +11,7 @@ var say = require('./node_modules/say/lib/say.js');
 var play = require('./node_modules/play/lib/play.js');
 
 
-var sender = new osc.UdpSender('192.168.1.44', 7777);
+var sender = new osc.UdpSender('192.168.0.7', 7777);
 //end OSC STUFF
 
 // routing
