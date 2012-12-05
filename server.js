@@ -7,8 +7,8 @@ server.listen(8888);
 
 //OSC STUFF added by kevyb
 var osc = require('./omgosc.js');
-var say = require('./node_modules/say/lib/say.js');
-var play = require('./node_modules/play/lib/play.js');
+//var say = require('./node_modules/say/lib/say.js');
+//var play = require('./node_modules/play/lib/play.js');
 
 
 var sender = new osc.UdpSender('192.168.0.7', 7777);
@@ -29,18 +29,18 @@ io.sockets.on('connection', function (socket) {
 	receiver.on('', function(e) {
 		console.log(e);
 		io.sockets.emit('dataReceived', e.params[0]);
-    say.speak('Alex', e.params[0]);
+//    say.speak('Alex', e.params[0]);
 	});
-  play.sound('snd/MTBrain.wav');
+//  play.sound('snd/MTBrain.wav');
 
 	// when the client emits 'sendchat', this listens and executes
 	socket.on('sendchat', function (data) {
 		// we tell the client to execute 'updatechat' with 2 parameters
 		io.sockets.emit('updatechat', socket.username, data);
-    say.speak('Alex', data);
-		sender.send('/chat_data',
-		              'ss',			//'sfiTFNI', set data types to be separated by commas below or spaces in msg.
-		              [socket.username, data]);
+//    say.speak('Alex', data);
+//		sender.send('/chat_data',
+//		              'ss',			//'sfiTFNI', set data types to be separated by commas below or spaces in msg.
+//		              [socket.username, data]);
 	});
 
 	// when the client emits 'adduser', this listens and executes
@@ -56,9 +56,9 @@ io.sockets.on('connection', function (socket) {
 		socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
 		// update the list of users in chat, client-side
 		io.sockets.emit('updateusers', usernames);
-		sender.send('/newusername',
-		              's',			//'sfiTFNI', set data types to be separated by commas below or spaces in msg.
-		              [socket.username]);
+//		sender.send('/newusername',
+//		              's',			//'sfiTFNI', set data types to be separated by commas below or spaces in msg.
+//		              [socket.username]);
 	});
 	
 	
